@@ -3,7 +3,7 @@ const axios = require("axios");
 const redis = require("redis");
 require("dotenv").config({ path: ".env.local" });
 
-// Redic configuration
+// Redis configuration
 const redisClient = redis.createClient();
 redisClient.connect().catch(console.error);
 
@@ -21,7 +21,7 @@ const fetchAndCacheMatchData = async () => {
       headers: { "X-Auth-Token": API_KEY },
     });
 
-    // Zapisz wynik w Redis
+    // Save data in redis
     await redisClient.set("matchData", JSON.stringify(response.data));
     console.log("Data saved in Redis at: ", new Date().toLocaleTimeString());
   } catch (error) {
@@ -46,7 +46,7 @@ app.get("/data", async (req, res) => {
   }
 });
 
-// Uruchom serwer
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
