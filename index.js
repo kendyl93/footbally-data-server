@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const redis = require("redis");
+require("dotenv").config({ path: ".env.local" });
 
 // Redic configuration
 const redisClient = redis.createClient();
@@ -11,7 +12,7 @@ const PORT = 3000;
 
 // API constans
 const EXTERNAL_API_URL = "https://api.football-data.org/v4/matches";
-const API_KEY = "";
+const API_KEY = process.env.API_KEY;
 
 // Fetch data and save in redis
 const fetchAndCacheMatchData = async () => {
@@ -32,7 +33,7 @@ const fetchAndCacheMatchData = async () => {
 setInterval(fetchAndCacheMatchData, 10000);
 
 // Endpoint to fetch data from Redis
-app.get("/match", async (req, res) => {
+app.get("/data", async (req, res) => {
   try {
     const cachedData = await redisClient.get("matchData");
     if (cachedData) {
