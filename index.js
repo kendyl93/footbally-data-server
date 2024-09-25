@@ -1,5 +1,4 @@
 const express = require("express");
-const axios = require("axios");
 const redis = require("redis");
 require("dotenv").config({ path: ".env.local" });
 
@@ -8,45 +7,28 @@ const redisClient = redis.createClient();
 redisClient.connect().catch(console.error);
 
 const app = express();
-const PORT = 3000;
+const PORT = 4000;
 
-// API constans
-const EXTERNAL_API_URL = "https://api.football-data.org/v4/matches";
-const API_KEY = process.env.API_KEY;
-
-// Fetch data and save in redis
-const fetchAndCacheMatchData = async () => {
+// Endpoint to fetch match data from Redis (through the BFF)
+app.get("/matches", async (req, res) => {
   try {
-    const response = await axios.get(EXTERNAL_API_URL, {
-      headers: { "X-Auth-Token": API_KEY },
-    });
-
-    // Save data in redis
-    await redisClient.set("matchData", JSON.stringify(response.data));
-    console.log("Data saved in Redis at: ", new Date().toLocaleTimeString());
-  } catch (error) {
-    console.error("Error fethcing data from API:", error);
-  }
-};
-
-// Set fetching data in interval
-setInterval(fetchAndCacheMatchData, 10000);
-
-// Endpoint to fetch data from Redis
-app.get("/data", async (req, res) => {
-  try {
+    // fetching data from redis
     const cachedData = await redisClient.get("matchData");
     if (cachedData) {
       return res.json(JSON.parse(cachedData));
     } else {
-      return res.status(404).json({ message: "Not found" });
+      return res.status(404).json({ message: "No data" });
     }
   } catch (error) {
-    return res.status(500).json({ message: "[data-server]: error", error });
+    return res.status(500).json({ message: "[BFF]: error", error });
   }
 });
 
-// Start server
+app.post("/users", async (req, res) => {
+  res.send("users");
+});
+
+// Start BFF server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`BFF Server running on port ${PORT}`);
 });

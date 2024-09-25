@@ -2,8 +2,9 @@
   "name": "footbally-data-server",
   "version": "1.0.0",
   "scripts": {
-    "start": "node index.js",
-    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon index.js"
+    "start:bff": "NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon index.js",
+    "start:data-detcher": "NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon data-fetcher.js",
+    "start:all": "concurrently --prefix '[{name}]' --names 'data-fetcher,bff' \"npm run start:data-detcher\" \"npm run start:bff\""
   },
   "dependencies": {
     "axios": "^1.7.7",
@@ -12,6 +13,7 @@
     "redis": "^4.7.0"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "nodemon": "^3.1.7"
   }
 }
