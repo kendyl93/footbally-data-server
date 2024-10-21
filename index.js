@@ -1,5 +1,6 @@
 const express = require("express");
 const redis = require("redis");
+const axios = require("axios");
 require("dotenv").config({ path: ".env.local" });
 
 // Redis configuration
@@ -7,6 +8,7 @@ const redisClient = redis.createClient();
 redisClient.connect().catch(console.error);
 
 const app = express();
+app.use(express.json());
 const PORT = 4000;
 
 // Endpoint to fetch match data from Redis (through the BFF)
@@ -22,10 +24,6 @@ app.get("/matches", async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "[BFF]: error", error });
   }
-});
-
-app.post("/users", async (req, res) => {
-  res.send("users");
 });
 
 // Start BFF server
