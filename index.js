@@ -11,7 +11,7 @@ redisClient.connect().catch(console.error);
 
 const app = express();
 app.use(express.json());
-const PORT = 4000;
+const PORT = 4001;
 
 // Endpoint to fetch match data from Redis (through the BFF)
 app.get("/matches", async (req, res) => {

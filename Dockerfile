@@ -13,7 +13,7 @@ COPY . .
 
 # Expose the necessary ports
 EXPOSE 3001
-EXPOSE 4000
+EXPOSE 4001
 
 # Start both services with the "start:all" script
 CMD ["npm", "run", "start:all"]
