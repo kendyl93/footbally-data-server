@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    environment:
+      - NODE_ENV=production
+      - API_KEY=${API_KEY} # Pass the API_KEY from the .env.local
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    ports:
+      - "3001:3001" # Expose port 3001 for data-fetcher
+      - "4001:4000" # Expose port 4000 of the container as 4001 on the host
+    depends_on:
+      - redis
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - app-network
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

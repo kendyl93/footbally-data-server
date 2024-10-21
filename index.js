@@ -4,7 +4,9 @@ const axios = require("axios");
 require("dotenv").config({ path: ".env.local" });
 
 // Redis configuration
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({
+  url: "redis://redis:6379",
+});
 redisClient.connect().catch(console.error);
 
 const app = express();
