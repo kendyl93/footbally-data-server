@@ -32,7 +32,7 @@ const fetchAndCacheMatchData = async () => {
 };
 
 // Set fetching data in interval
-setInterval(fetchAndCacheMatchData, 10000);
+setInterval(fetchAndCacheMatchData, 60000);
 
 // Start server
 app.listen(PORT, () => {
