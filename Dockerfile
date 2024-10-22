@@ -16,4 +16,4 @@ EXPOSE 3001
 EXPOSE 4001
 
 # Start both services with the "start:all" script
-CMD ["npm", "run", "start:all"]
+CMD ["npm", "run", "start:all:prod"]
