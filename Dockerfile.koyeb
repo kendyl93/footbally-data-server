@@ -7,7 +7,7 @@ COPY . /app
 WORKDIR /app
 
 # Install all dependencies, including "concurrently"
-RUN npm install --only=production
+RUN npm ci
 
 # Set the entry point to run Docker Compose, which will handle the rest
 CMD ["docker-compose", "up"]
